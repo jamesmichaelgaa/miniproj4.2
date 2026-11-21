@@ -1,0 +1,64 @@
+# Cursor Rules – AI Budgeting App
+
+## Project Context
+- Build an AI-assisted personal budgeting application.
+- Target initial market: Philippines.
+- Default currency: Philippine Peso (PHP).
+- Follow `spec.md`, `docs/architecture.md`, and `AGENTS.md`.
+
+## Development Standards
+- Write clean, modular, maintainable code.
+- Keep implementations simple.
+- Avoid unnecessary dependencies.
+- Follow existing project conventions.
+- Do not modify unrelated files.
+- Explain significant technical decisions.
+
+## Financial Logic
+- Perform financial calculations using application logic.
+- Never rely on AI for authoritative financial calculations.
+- Maintain monetary precision.
+- Validate all financial inputs.
+- Ensure dashboard totals match transaction records.
+
+## AI Integration
+- Keep AI API calls server-side.
+- Never expose AI API keys in frontend code.
+- Send only necessary financial data to AI services.
+- Validate AI responses before displaying them.
+- Treat AI outputs as recommendations.
+
+## Security and Secrets
+- Never hardcode API keys, passwords, tokens, or credentials.
+- Never expose secrets in frontend code, browser responses, logs, or error messages.
+- Never commit `.env` files or secret values.
+- Use environment variables for sensitive configuration.
+- Keep `.env.example` limited to variable names and safe placeholders.
+- Store production secrets in Vercel Environment Variables.
+- Store CI/CD credentials in GitHub Actions Secrets.
+- Never expose secret environment variables through public frontend prefixes.
+- Enforce authentication and authorization.
+- Protect user-specific financial data.
+- Rotate credentials if accidentally exposed.
+
+## Testing
+- Add tests for new functionality.
+- Prioritize financial calculation tests.
+- Test invalid inputs and edge cases.
+- Run relevant tests before completing changes.
+- Never claim tests passed without running them.
+
+## Git Workflow
+- Prefer feature branches for development.
+- Use descriptive commit messages.
+- Keep changes focused.
+- Review changes before committing.
+- Never overwrite existing user changes.
+
+## Completion Requirements
+Before considering a task complete:
+1. Verify requirements are satisfied.
+2. Review modified files.
+3. Run relevant tests.
+4. Check for security issues.
+5. Summarize changes and remaining issues.
