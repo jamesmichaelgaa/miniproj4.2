@@ -4,6 +4,7 @@ import {
   PiggyBank,
   Receipt,
   Settings,
+  Sparkles,
   type LucideIcon,
 } from "lucide-react";
 
@@ -23,5 +24,6 @@ export const mainNavigation: NavItem[] = [
   { title: "Transactions", href: "/transactions", icon: Receipt },
   { title: "Budgets", href: "/budgets", icon: PiggyBank },
   { title: "Reports", href: "/reports", icon: ChartColumn },
+  { title: "AI Assistant", href: "/assistant", icon: Sparkles },
   { title: "Settings", href: "/settings", icon: Settings },
 ];

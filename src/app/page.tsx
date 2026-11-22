@@ -8,20 +8,38 @@ import { UpcomingBills } from "@/components/dashboard/upcoming-bills";
 import { PageHeader } from "@/components/shared/page-header";
 import { SectionCard } from "@/components/shared/section-card";
 import { Badge } from "@/components/ui/badge";
-import { MOCK_TODAY, getFinanceData } from "@/data/mock";
+import { createClient } from "@/lib/supabase/server";
 import { formatMonth } from "@/lib/dates";
 import { getDashboardData } from "@/lib/finance/dashboard";
 import { formatCurrencyWhole } from "@/lib/money";
 
 export default function DashboardPage() {
-  const data = getDashboardData(getFinanceData(), MOCK_TODAY);
+  return <DashboardContent />;
+}
+
+async function DashboardContent() {
+  const supabase = await createClient();
+  const today = new Date().toISOString().slice(0, 10);
+  const [{ data: categories }, { data: txRows }, { data: budgetRows }, { data: billRows }] = await Promise.all([
+    supabase.from("categories").select("id,name,type,icon"),
+    supabase.from("transactions").select("id,type,amount,category_id,description,transaction_date"),
+    supabase.from("budgets").select("id,category_id,amount,month"),
+    supabase.from("recurring_bills").select("id,name,amount,category_id,frequency,next_due_date").eq("active", true),
+  ]);
+  const finance = {
+    categories: (categories ?? []).map((c) => ({ id: c.id, name: c.name, type: c.type as "income" | "expense", icon: c.icon as import("@/types/finance").Category["icon"] })),
+    transactions: (txRows ?? []).map((t) => ({ id: t.id, type: t.type as "income" | "expense", amount: t.amount, categoryId: t.category_id, description: t.description, date: t.transaction_date })),
+    budgets: (budgetRows ?? []).map((b) => ({ id: b.id, categoryId: b.category_id, limit: b.amount, month: b.month.slice(0,7) })),
+    recurringBills: (billRows ?? []).map((b) => ({ id: b.id, name: b.name, amount: b.amount, categoryId: b.category_id, frequency: b.frequency as import("@/types/finance").RecurringFrequency, nextDueDate: b.next_due_date })),
+  };
+  const data = getDashboardData(finance, today);
 
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
         title="Dashboard"
         description={`Your finances for ${formatMonth(data.month)}`}
-        actions={<Badge variant="outline">Sample data</Badge>}
+        actions={<Badge variant="outline">Live account data</Badge>}
       />
 
       <SummaryCards data={data} />
