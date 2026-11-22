@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Receipt } from "lucide-react";
-import { ComingSoon } from "@/components/shared/coming-soon";
+import { TransactionsView } from "@/components/transactions/transactions-view";
+import { MOCK_TODAY, getFinanceData } from "@/data/mock";
 
 export const metadata: Metadata = { title: "Transactions" };
 
 export default function TransactionsPage() {
-  return <ComingSoon title="Transactions" description="Review and categorize your income and spending." icon={Receipt} />;
+  const { transactions, categories } = getFinanceData();
+  return <TransactionsView initialTransactions={transactions} categories={categories} today={MOCK_TODAY} />;
 }
